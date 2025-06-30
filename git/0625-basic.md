@@ -12,3 +12,5 @@ git remote add origin 주소
 git push origin main
 
 git status
+
+git clone 주소
