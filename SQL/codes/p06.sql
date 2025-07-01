@@ -20,11 +20,3 @@ select substring(email, 1, locate('@', email)) from userinfo;
 SELECT email, SUBSTRING(email, 1, LOCATE('@', email) - 1) AS username FROM userinfo;
 -- (추가 과제 -> email 이 NULL 인 경우 'No Mail' 이라고 표시
 
-
-
-
-'hi@a.com'
-
-
-
-
