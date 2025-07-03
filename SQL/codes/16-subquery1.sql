@@ -24,18 +24,17 @@ SELECT avg(quantity) from sales;
 
 -- sales에서 가장 비싼 걸 시킨 주문
 SELECT * FROM sales
-where total_amount=(SELECT
+where total_amount=(SELECT max(total_amount) from sales);
+
 -- 가장 최근 주문일의 주문데이터
 
 SELECT * FROM sales
-ORDER BY order_date asc
-LIMIT 1;
+where order_date=(SELECT max(total_amount) from sales);
 
 -- 가장 평균과 유사한 주문데이터 5개
 
 SELECT *,
-       ABS(total_amount - (SELECT AVG(total_amount) FROM sales)) AS 편차
+       ABS(total_amount - (SELECT AVG(total_amount) FROM sales)) AS 평균과의차이
 FROM sales
-ORDER BY 편차 desc
+ORDER BY 평균과의차이
 LIMIT 5;
-
