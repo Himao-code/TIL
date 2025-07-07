@@ -24,8 +24,7 @@ INNER JOIN sales s ON c.customer_id = s.customer_id;
 -- LEFT JOIN -> 왼쪽 테이블(c) 의 모든 데이터와 + 매칭되는 오른쪽 데이터 | 매칭되는 오른쪽 데이터 (없어도 등장)
 SELECT
   c.customer_id,
-  
-  count(*) as 주문횟수
+  count(*) as 주문횟수,
   sum(total_amount)
 FROM customers c 
 LEFT JOIN sales s ON c.customer_id = s.customer_id
@@ -49,16 +48,27 @@ from customers c
 left join sales s on c.customer_id = s.customer_id
 GROUP BY  c.customer_id;
 
+-- INNER JOIN
+SELECT 
+    '1. INNER JOIN' AS 구분,
+    COUNT(*) AS 줄수,
+    COUNT(DISTINCT c.customer_id) AS 고객수
+FROM customers c
+INNER JOIN sales s ON c.customer_id = s.customer_id
 
+union
+-- LEFT JOIN 왼쪽(FROM 뒤에 온)테이블은 무조건 다나옴
+SELECT
+	'2. LEFT JOIN' AS 구분,
+    COUNT(*) as 줄수,
+    count(DISTINCT c.customer_id) as 고객수
+from customers c
+left join sales s on c.customer_id = s.customer_id
 
+UNION 
 
-
-
-
-
-
-
-
-
-
-
+SELECT
+  '3. 전체 고객수' AS 구분,
+  COUNT(*) AS 행수,
+  COUNT(*) AS 고객수
+FROM customers;
