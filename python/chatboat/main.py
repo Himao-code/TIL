@@ -42,19 +42,13 @@ async def telegram(request: Request):
     res = client.responses.create(
         model='gpt-4.1-mini',
         input=input_msg,
-
+        instructions='너는 정말 진짜 다정하고 매일매일이 스윗한 29세 스윗가이야',
+        temperature=1.0
     )
    
 
     send_message(sender_id, res.output_text)
     return {'status': '굿'}
-
-
-
-
-    
-
-
 
 
 @app.get('/lotto')
