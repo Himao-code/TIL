@@ -3,16 +3,59 @@
 # pip install uvicorn[standard]
 
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import random
+import requests
+from dotenv import load_dotenv
+import os
+from openai import OpenAI
 
+# env파일에 내용들을 불러옴
+load_dotenv()
 
      
 app = FastAPI()
 
-@app.get('/hi')
-def hi():
-    return {'status': 'ok'}
+
+
+def send_message(chat_id, message,):
+    # .env 에서 'TELEGRAM_BOT_TOKEN' 해당하는 내용을 가져옴
+    bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    URL = f'https://api.telegram.org/bot{bot_token}'
+    
+    body = {
+        # 사용자 chat_id는 어디서 가져오지?
+    'chat_id': '8264346924',
+    'text': message
+    }
+    requests.get(URL + f'/sendMessage', body)
+    
+
+@app.post('/telegram')
+async def telegram(request: Request):
+    print('텔레그램에서 요청이 들어왔다!')
+
+    data = await request.json()
+    sender_id = data['message']['chat']['id']
+    input_msg = data['message']['text']
+    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+    res = client.responses.create(
+        model='gpt-4.1-mini',
+        input=input_msg,
+
+    )
+   
+
+    send_message(sender_id, res.output_text)
+    return {'status': '굿'}
+
+
+
+
+    
+
+
+
 
 @app.get('/lotto')
 def lotto():
